@@ -4,7 +4,7 @@
 
 (deftest namespace-loads
   (testing "the restored CLJC namespace loads"
-    (is (some? (the-ns 'voxel)))))
+    (is (some? (find-ns 'voxel)))))
 
 ;; Ported 1:1 from kami-voxel/src/lib.rs `mod tests`.
 
