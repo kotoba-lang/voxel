@@ -3,4 +3,4 @@
             [voxel]))
 (deftest namespace-loads
   (testing "the restored CLJC namespace loads"
-    (is (some? voxel))))
+    (is (some? (find-ns 'voxel)))))
