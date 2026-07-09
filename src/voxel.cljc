@@ -37,7 +37,7 @@
   (+ (* z h w) (* y w) x))
 
 (defn- in-bounds? [w h d x y z]
-  (and (< x w) (< y h) (< z d)))
+  (and (>= x 0) (>= y 0) (>= z 0) (< x w) (< y h) (< z d)))
 
 (defn dense-new
   "New dense volume of size w*h*d, all cells air. Mirrors `DenseVolume::new`."
@@ -143,11 +143,18 @@
           (octree-query-node (nth children idx) (mod x half) (mod y half) (mod z half) half))))
     :else (air)))
 
+(defn- octree-in-bounds? [size x y z]
+  (and (>= x 0) (>= y 0) (>= z 0) (< x size) (< y size) (< z size)))
+
 (defn- octree-get [vol x y z]
-  (octree-query-node (:root vol) x y z (:size vol)))
+  (if (octree-in-bounds? (:size vol) x y z)
+    (octree-query-node (:root vol) x y z (:size vol))
+    (air)))
 
 (defn- octree-set [vol x y z voxel]
-  (update vol :root octree-insert-node x y z (:size vol) voxel))
+  (if (octree-in-bounds? (:size vol) x y z)
+    (update vol :root octree-insert-node x y z (:size vol) voxel)
+    vol))
 
 (defn- octree-count-filled [vol]
   (let [size (:size vol)]

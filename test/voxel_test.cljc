@@ -30,6 +30,26 @@
     (is (voxel/solid? (voxel/vol-get v 7 7 7)))
     (is (not (voxel/solid? (voxel/vol-get v 0 0 0))))))
 
+(deftest dense-rejects-negative-coordinates
+  ;; Negative x/y/z must not wrap into a positive flat index that aliases
+  ;; a different, valid cell -- (z*h*w + y*w + x) can be a small positive
+  ;; number for negative x on a non-zero row.
+  (let [v (voxel/dense-new 4 4 4)
+        v (voxel/vol-set v 3 1 0 {:material 7 :color [1.0 0.0 0.0 1.0]})]
+    (is (not (voxel/solid? (voxel/vol-get v -1 2 0)))
+        "negative x must not alias (3,1,0)'s slot")
+    (is (= v (voxel/vol-set v -1 2 0 {:material 9 :color [1.0 1.0 1.0 1.0]}))
+        "vol-set with negative coords must be a no-op, not corrupt (3,1,0)")))
+
+(deftest octree-rejects-negative-coordinates
+  ;; octant-index/mod-based descent can also wrap a negative coordinate
+  ;; into a valid octant's local range and alias that octant's contents.
+  (let [v (voxel/octree-new 4)
+        v (voxel/vol-set v 1 0 0 {:material 7 :color [1.0 0.0 0.0 1.0]})]
+    (is (not (voxel/solid? (voxel/vol-get v -1 0 0)))
+        "negative x must not alias (1,0,0)'s octant")
+    (is (= v (voxel/vol-set v -1 0 0 {:material 9 :color [1.0 1.0 1.0 1.0]})))))
+
 (deftest wrapper-compat
   (let [vol (voxel/new-dense 4 4 4)
         vol (voxel/vol-set vol 0 0 0 {:material 1 :color [1.0 1.0 1.0 1.0]})
