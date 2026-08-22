@@ -17,11 +17,13 @@
 (require '[cljs.test :as t]
          '[voxel-test]
          '[vdb-test]
-         '[nvdb-test])
+         '[nvdb-test]
+         '[vdb-file-test])
 
 (defmethod t/report [:cljs.test/default :end-run-tests] [m]
   (when-not (t/successful? m) (set! (.-exitCode js/process) 1)))
 
 (t/run-tests 'voxel-test
               'vdb-test
-              'nvdb-test)
+              'nvdb-test
+              'vdb-file-test)

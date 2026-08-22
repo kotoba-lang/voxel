@@ -103,7 +103,19 @@
   (apply str (map #(#?(:clj char :cljs js/String.fromCharCode) %) (subvec bs pos (+ pos n)))))
 
 (defn- put-u [v n] (mapv #(mod (long (/ v (Math/pow 256 %))) 256) (range n)))
-(defn- put-str [x] (into (put-u (count x) 4) (map #(#?(:clj int :cljs identity) %) x)))
+
+(defn- char-bytes
+  "The code units of a string, as bytes.
+
+  `#?(:clj int :cljs identity)` over a string looks portable and is not: on
+  the JVM it yields code points, and in ClojureScript it yields single-
+  character STRINGS, which then sit in the byte vector and read back as
+  spaces. The JVM suite passes either way — this was found by running the
+  probe under nbb, not by reading the code."
+  [x]
+  (mapv #(#?(:clj int :cljs (fn [c] (.charCodeAt c 0))) %) x))
+
+(defn- put-str [x] (into (put-u (count x) 4) (char-bytes x)))
 
 (defn- f64-at [bs pos]
   #?(:clj (Double/longBitsToDouble (unchecked-long (long (u bs pos 8))))
@@ -261,7 +273,7 @@
         (put-u (first library-version) 4)
         (put-u (second library-version) 4)
         [(if has-grid-offsets? 1 0)]
-        (map #(#?(:clj int :cljs identity) %) uuid)
+        (char-bytes uuid)
         (put-u (count metadata) 4)
         (mapcat (fn [{:meta/keys [name type raw]}]
                   (concat (put-str name) (put-str type)

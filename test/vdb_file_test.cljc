@@ -8,7 +8,7 @@
   #?(:clj (put-u (bit-and (Float/floatToIntBits (float x)) 0xffffffff) 4)
      :cljs (let [b (js/ArrayBuffer. 4) d (js/DataView. b)]
              (.setFloat32 d 0 x true) (mapv #(.getUint8 d %) (range 4)))))
-(defn- str-bytes [s] (mapv #(#?(:clj int :cljs identity) %) s))
+(defn- str-bytes [s] (mapv #(#?(:clj int :cljs (fn [c] (.charCodeAt c 0))) %) s))
 (defn- abs* [x] (#?(:clj Math/abs :cljs js/Math.abs) (double x)))
 
 (def ^:private uuid "d0f2b6a1-4c3e-4a5b-9f01-2233445566aa")
