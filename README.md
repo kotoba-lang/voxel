@@ -9,13 +9,19 @@ part of the **clj-wgsl migration** (ADR-2607010930, `com-junkawasaki/root`).
 the shape OpenVDB's `Tree4<T, 5, 4, 3>` uses. `SparseVolume` below is a hash
 map of filled cells: sparse, but with neither the locality nor the tiles.
 
-**It is the data structure, not the file format.** `.vdb` and `.nvdb` are
-neither read nor written; `from-edn` says so by name when handed a payload
-that is not its own. The NanoVDB magic numbers are recorded in the source
-because they were confirmed upstream, but the byte layout of `FileHeader`
-(16 bytes) and `FileMetaData` (176 bytes) could not be obtained without
-guessing — and a parser written by guessing round-trips with itself while
-opening nobody else's file.
+`voxel.nvdb` is the `.nvdb` FILE CONTAINER — segments, their 16-byte
+`FileHeader` and 176-byte `FileMetaData`, the grid name, and the grid buffer.
+The layout was transcribed from `nanovdb/nanovdb/NanoVDB.h` on 2026-08-24;
+two earlier attempts left it unimplemented because only the SIZES were
+obtainable, and a parser written from sizes alone round-trips with itself
+while opening nobody else's file. The fields were obtainable — from the
+source, with a tool that does not summarise.
+
+**The grid buffer is opaque.** `voxel.nvdb` reads and writes the container and
+its metadata — what `nanovdb_print` reports — and `voxel.vdb` is the tree.
+Nothing connects them: no function here turns a grid buffer into a tree, and
+none pretends to. `.vdb` (the OpenVDB file, as opposed to NanoVDB) is still
+not read or written. ZIP and BLOSC segments are refused rather than mis-read.
 
 ## Status
 
