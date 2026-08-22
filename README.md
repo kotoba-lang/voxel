@@ -4,6 +4,19 @@ Zero-dep portable `.cljc` — restored from the legacy `kami-engine/kami-voxel` 
 (kotoba-lang/kami-engine, deleted in PR #82 "Remove Rust workspace from kami-engine") as
 part of the **clj-wgsl migration** (ADR-2607010930, `com-junkawasaki/root`).
 
+`voxel.vdb` is the VDB tree itself — a sparse hierarchy with fixed branching
+(8^3 voxels per leaf, 16^3 leaves per internal node, 32^3 above) and tiles, in
+the shape OpenVDB's `Tree4<T, 5, 4, 3>` uses. `SparseVolume` below is a hash
+map of filled cells: sparse, but with neither the locality nor the tiles.
+
+**It is the data structure, not the file format.** `.vdb` and `.nvdb` are
+neither read nor written; `from-edn` says so by name when handed a payload
+that is not its own. The NanoVDB magic numbers are recorded in the source
+because they were confirmed upstream, but the byte layout of `FileHeader`
+(16 bytes) and `FileMetaData` (176 bytes) could not be obtained without
+guessing — and a parser written by guessing round-trips with itself while
+opening nobody else's file.
+
 ## Status
 
 Restored. `src/voxel.cljc` ports the original `kami-voxel/src/lib.rs` (410 lines) 1:1:

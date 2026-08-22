@@ -15,9 +15,11 @@
 ;; `scripts/verify-cljs-runner-completeness.cljs` checks this file
 ;; against the tree.
 (require '[cljs.test :as t]
-         '[voxel-test])
+         '[voxel-test]
+         '[vdb-test])
 
 (defmethod t/report [:cljs.test/default :end-run-tests] [m]
   (when-not (t/successful? m) (set! (.-exitCode js/process) 1)))
 
-(t/run-tests 'voxel-test)
+(t/run-tests 'voxel-test
+              'vdb-test)
