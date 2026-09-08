@@ -1,6 +1,6 @@
 (ns vdb-test
   (:require [clojure.test :refer [deftest is testing]]
-            [clojure.string :as string]
+            [kotoba.lang.text :as string]
             [voxel.vdb :as vdb]))
 
 (deftest empty-grid-reads-as-background-everywhere

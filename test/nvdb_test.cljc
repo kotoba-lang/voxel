@@ -1,6 +1,6 @@
 (ns nvdb-test
   (:require [clojure.test :refer [deftest is testing]]
-            [clojure.string :as string]
+            [kotoba.lang.text :as string]
             [voxel.nvdb :as nvdb]))
 
 (defn- u [n width] (mapv (fn [i] (mod (long (/ n (Math/pow 256 i))) 256)) (range width)))

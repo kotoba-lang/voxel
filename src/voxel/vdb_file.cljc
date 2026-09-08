@@ -65,7 +65,7 @@
   to this: nothing here turns a byte range into a `voxel.vdb` grid. Keeping
   that seam visible is deliberate — a reader that quietly produced an empty
   tree for every grid would look like it worked."
-  (:require [clojure.string :as string]))
+  (:require [kotoba.lang.text :as string]))
 
 (def magic
   "`OPENVDB_MAGIC` — 0x56444220, the ASCII \"VDB \" read as a little-endian

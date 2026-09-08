@@ -1,6 +1,6 @@
 (ns vdb-file-test
   (:require [clojure.test :refer [deftest is testing]]
-            [clojure.string :as string]
+            [kotoba.lang.text :as string]
             [voxel.vdb-file :as f]))
 
 (defn- put-u [v n] (mapv #(mod (long (/ v (Math/pow 256 %))) 256) (range n)))
