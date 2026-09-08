@@ -45,7 +45,7 @@
 
   Compressed segments are REFUSED rather than mis-read: ZIP and BLOSC change
   what follows the metadata, and this decodes neither."
-  (:require [clojure.string :as string]))
+  (:require [kotoba.lang.text :as string]))
 
 (def magic-strings
   "The magic numbers are ASCII read little-endian, which is why they are held
@@ -192,7 +192,7 @@
         (not (contains? codecs codec))
         (str "codec " codec " is not one this knows (0 NONE, 1 ZIP, 2 BLOSC)")
         (pos? codec)
-        (str "this segment is " (string/upper-case (clojure.core/name (codecs codec)))
+        (str "this segment is " (string/upper (clojure.core/name (codecs codec)))
              "-compressed, and this decodes neither ZIP nor BLOSC. Compression"
              " changes what follows the metadata, so reading on would return"
              " a grid buffer of compressed bytes labelled as a grid.")))))

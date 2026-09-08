@@ -27,7 +27,7 @@
 
   Not here: values other than scalars, levels beyond the three, narrow-band
   level-set operations, Blosc or ZIP compression, and delayed loading."
-  (:require [clojure.string :as string]))
+  (:require [kotoba.lang.text :as string]))
 
 (def nanovdb-magic
   "Confirmed from AcademySoftwareFoundation/openvdb nanovdb/NanoVDB.h,
