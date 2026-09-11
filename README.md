@@ -25,7 +25,7 @@ not read or written. ZIP and BLOSC segments are refused rather than mis-read.
 
 ## Status
 
-Restored. `src/voxel.cljc` ports the original `kami-voxel/src/lib.rs` (410 lines) 1:1:
+Restored. `src/voxel.cljk` ports the original `kami-voxel/src/lib.rs` (410 lines) 1:1:
 the `Voxel` value type, the `Volume` trait, and its three storage backends —
 `DenseVolume` (flat W*H*D array), `SparseVolume` (map of only-filled cells),
 `OctreeVolume` (adaptive power-of-2 tree) — plus the `VoxelVolume` wrapper
@@ -35,7 +35,7 @@ plain CLJC map tagged with `:type`, with the trait methods becoming generic
 pure functions throughout — no IO/GPU (native execution stays substrate).
 
 All 4 original Rust `#[test]`s (`dense`, `sparse`, `octree`, `wrapper_compat`) are
-ported 1:1 to `test/voxel_test.cljc`, plus 1 namespace-loads smoke test — **5 tests /
+ported 1:1 to `test/voxel_test.cljk`, plus 1 namespace-loads smoke test — **5 tests /
 11 assertions, 0 failures**.
 
 ## Develop
