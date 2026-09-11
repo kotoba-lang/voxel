@@ -41,5 +41,5 @@ ported 1:1 to `test/voxel_test.cljk`, plus 1 namespace-loads smoke test — **5 
 ## Develop
 
 ```bash
-clojure -M:test
+kbb -M:test
 ```
