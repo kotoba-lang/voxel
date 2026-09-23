@@ -1,5 +1,5 @@
 (ns vdb-file-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kotoba.lang.text :as string]
             [voxel.vdb-file :as f]))
 

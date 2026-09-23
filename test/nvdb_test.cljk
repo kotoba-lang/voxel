@@ -1,5 +1,5 @@
 (ns nvdb-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [kotoba.lang.text :as string]
             [voxel.nvdb :as nvdb]))
 
