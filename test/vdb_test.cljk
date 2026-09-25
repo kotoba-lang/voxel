@@ -76,7 +76,7 @@
       (is (= 1 (vdb/get-voxel (vdb/topology-op :union a b) [3 3 3])))
       (is (= 2 (vdb/get-voxel (vdb/topology-op :union a b) [5 5 5]))))
     (testing "and an unknown op is refused by name"
-      (is (thrown? #?(:clj clojure.lang.ExceptionInfo :cljs js/Error)
+      (is (thrown? js/Error
                    (vdb/topology-op :xor a b))))))
 
 (deftest edn-round-trips-and-says-what-it-is-not
